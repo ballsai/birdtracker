@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GoogleMap, withScriptjs, withGoogleMap, Marker, InfoWindow} from 'react-google-maps';
-
+import mapStyles from '../assets/mapStyles';
 
 const Map = () => {
     const [birds, setBirds] = useState([]);
@@ -23,6 +23,7 @@ const Map = () => {
         <GoogleMap 
             defaultZoom={15} 
             defaultCenter={{lat:13.846246,lng:100.568640}} 
+            defaultOptions = {{styles: mapStyles}}
         >
             { birds.map((bird, index) => (
                 <Marker key = {index}
@@ -33,6 +34,7 @@ const Map = () => {
                     onClick = {()=>{
                         setSelectedLocation(bird);
                     }}
+                    
                 />
             ))}
 
@@ -46,7 +48,9 @@ const Map = () => {
                         setSelectedLocation(null);
                     }}
                 >
-                    <div>Location details</div>
+                <div>
+                    <p>{selectedLocation.lat} {selectedLocation.lng}</p>
+                </div>
                 </InfoWindow>
             )}
         </GoogleMap>
