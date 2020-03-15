@@ -18,7 +18,7 @@ const MapContainer = () =>{
 
     return(
         <ul>
-            { birds.map((bird, index)=> <li key={bird.bird_id.toString()}>{bird.bird_id}</li>) }
+            { birds.map((bird, index)=> <li key={index.toString()}>{bird.bird_id}</li>) }
         </ul>
     );
         
