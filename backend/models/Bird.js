@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const birdSchema = new Schema({
-    bird_id: { type: String},
-    time_stamp: { type: String},
-    lat:{ type: String},
-    lng:{ type: String}
+    id: { type: String},
+    name: { type: String},
+    age: {type: Number},
+    species: {type: String}
 },{
     versionKey: false    
 });

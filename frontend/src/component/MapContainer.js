@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { GoogleMap, 
         withScriptjs, 
@@ -7,33 +7,33 @@ import { GoogleMap,
         InfoWindow,
         Polyline} from 'react-google-maps';
 import mapStyles from '../assets/mapStyles';
+import FilterContainer from './FilterContainer';
 
 const Map = () => {
     const [birds, setBirds] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState(null);
-    const [coordinates, setCoordinates] = useState([]);
-
+    const [locations, setLocations] = useState([]);
+    
     useEffect( () => {
         async function fetchData(){
             try{
-                const birds = await axios.get('/api/birds');
-                setBirds(birds.data)  
-                let test = []  
-                birds.data.map(bird => {
-                    let newCoordinates = [];
-                    bird.tracks.map(track => {
-                        newCoordinates.push((({lat, lng})=>({lat, lng}))(track.coordinates));
-                    })
-                    setCoordinates(coordinates => [...coordinates, newCoordinates]);
+                const req = await axios.get('/api/birds');
+                setBirds(req.data)  
+                req.data.map(bird => {
+                    let newLocations = [];
+                    bird.locations.map(location => {
+                        newLocations = [...newLocations, 
+                            (({lat, lng})=>({lat, lng}))(location.coordinates)];
+                    });
+                    setLocations(locations => [...locations, newLocations]);
                 });
-                
 
             }catch(error){
                 console.error(error.message);
             }
         }
         fetchData();
-    }, []);
+    }, [birds]);
 
     return(
         <GoogleMap 
@@ -41,20 +41,22 @@ const Map = () => {
             defaultCenter={{lat:13.846246,lng:100.568640}} 
             defaultOptions = {{styles: mapStyles}}
         >
+            {/* <FilterContainer birds={birds}/> */}
+
             { birds.map( bird => (
-                bird.tracks.map((track, index) => (
+                bird.locations.map((location, index) => (
                     <Marker key={index} 
-                        position = {track.coordinates}
+                        position = {location.coordinates}
 
                         onClick = {() => {
-                            setSelectedPosition(track)
+                            setSelectedPosition(location)
                         }}
 
                     />
                 ))
             ))}
 
-            {selectedPosition && (
+            {/* {selectedPosition && (
                 <InfoWindow
                     position={
                        selectedPosition.coordinates
@@ -67,9 +69,9 @@ const Map = () => {
                 <p>{selectedPosition.coordinates.lat} {selectedPosition.coordinates.lat}</p>
                 </div>
                 </InfoWindow>
-            )}
+            )} */}
 
-            {coordinates.map((path, index) => (
+            {/* {coordinates.map((path, index) => (
                 <Polyline key = {index}
                     path = {path}
                     options = {{
@@ -78,16 +80,7 @@ const Map = () => {
                         strokeWeight: 2
                     }}
                 />
-            ))}
-
-            {/* <Polyline 
-                path = {coordinates}
-                options = {{
-                    strokeColor: "#ff2527",
-                    strokeOpacity: 0.75,
-                    strokeWeight: 2
-                }}
-            />             */}
+            ))} */}
         </GoogleMap>
     );
 }

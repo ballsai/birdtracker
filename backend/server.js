@@ -21,8 +21,13 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
+// Bird info
 const birds = require('./routes/birds');
 app.use('/api/birds', birds);
+
+// Location info
+const locations = require('./routes/locations');
+app.use('/api/locations', locations);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
 
