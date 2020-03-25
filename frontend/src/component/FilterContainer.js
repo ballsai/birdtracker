@@ -1,49 +1,54 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, 
-    withScriptjs, 
-    withGoogleMap, 
+import { 
     Marker, 
     InfoWindow,
     Polyline} from 'react-google-maps';
 
 const FilterContainer = (props) =>{
 
-    const [query, setQuery] = useState("");
     const [filterBird, setFilterBird] = useState(props.birds);
-    const [filterPath, setFilterPath] = useState(props.paths);
+    const [filterPaths, setFilterPaths] = useState([]);
+
+    const filterData = () =>{
+        let newList = [];
+        if(props.query != ""){
+            newList = props.birds.filter(bird => bird.name.includes(props.query));
+            setFilterBird(newList);
+        } else {
+            newList = props.birds;
+            setFilterBird(props.birds);
+        }
+        
+        newList.map(bird => {
+            let newLocations = [];
+            bird.locations.map(location => {
+                newLocations = [...newLocations, 
+                    (({lat, lng})=>({lat, lng}))(location.coordinates)];
+            });
+            setFilterPaths(filterPaths=> [...filterPaths, newLocations]);
+        });
+    }
 
     useEffect(() => {
 
-        setFilterBird(props.birds);
-        setFilterPath(props.paths);
+        setFilterPaths([]); // prevent append from previous list
+        filterData();
 
-    }, [props.birds]);
+        console.log(filterPaths);
 
-    const handleChange = (event) => {
-        let newList = [];
-
-        if(event.target.value != ""){
-            setQuery(event.target.value);
-            newList = props.birds.filter(bird => bird.name.includes(query));
-        } else {
-            newList = props.birds
-        }
-
-        setFilterBird(newList);
-    }
+    },[props.birds, props.query]);
 
     return(
         <div>
-            filter: <input onChange={handleChange}/>
             { filterBird.map(bird => (
-                bird.tracks.map((track, index) => (
+                bird.locations.map((location, index) => (
                     <Marker key={index} 
-                        position = {track.coordinates}
+                        position = {location.coordinates}
                     />
                 ))
             ))}
-{/* 
-            {filterPath.map((path, index) => (
+
+            {filterPaths.map((path, index) => (
                 <Polyline key = {index}
                     path = {path}
                     options = {{
@@ -52,7 +57,7 @@ const FilterContainer = (props) =>{
                         strokeWeight: 2
                     }}
                 />
-            ))} */}
+            ))}
         </div>
     );
 }

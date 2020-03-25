@@ -3,37 +3,37 @@ import axios from 'axios';
 import { GoogleMap, 
         withScriptjs, 
         withGoogleMap, 
-        Marker, 
-        InfoWindow,
-        Polyline} from 'react-google-maps';
+       } from 'react-google-maps';
 import mapStyles from '../assets/mapStyles';
 import FilterContainer from './FilterContainer';
 
-const Map = () => {
+const Map = ({query}) => {
     const [birds, setBirds] = useState([]);
     const [selectedPosition, setSelectedPosition] = useState(null);
     const [locations, setLocations] = useState([]);
-    
-    useEffect( () => {
-        async function fetchData(){
-            try{
-                const req = await axios.get('/api/birds');
-                setBirds(req.data)  
-                req.data.map(bird => {
-                    let newLocations = [];
-                    bird.locations.map(location => {
-                        newLocations = [...newLocations, 
-                            (({lat, lng})=>({lat, lng}))(location.coordinates)];
-                    });
-                    setLocations(locations => [...locations, newLocations]);
-                });
 
-            }catch(error){
-                console.error(error.message);
-            }
+    const fetchData = async() =>{
+        try{
+            const req = await axios.get('/api/birds');
+            setBirds(req.data);
+            // req.data.map(bird => {
+            //     let newLocations = [];
+            //     bird.locations.map(location => {
+            //         newLocations = [...newLocations, 
+            //             (({lat, lng})=>({lat, lng}))(location.coordinates)];
+            //     });
+            //     setLocations(locations => [...locations, newLocations]);
+            // });
+        
+        }catch(error){
+            console.error(error.message);
         }
+    }
+
+    useEffect( () => {
         fetchData();
-    }, [birds]);
+        console.log('parent\'s component')        
+    }, []);
 
     return(
         <GoogleMap 
@@ -41,9 +41,9 @@ const Map = () => {
             defaultCenter={{lat:13.846246,lng:100.568640}} 
             defaultOptions = {{styles: mapStyles}}
         >
-            {/* <FilterContainer birds={birds}/> */}
+            <FilterContainer birds={birds} query={query}/>
 
-            { birds.map( bird => (
+            {/* { birds.map( bird => (
                 bird.locations.map((location, index) => (
                     <Marker key={index} 
                         position = {location.coordinates}
@@ -54,7 +54,7 @@ const Map = () => {
 
                     />
                 ))
-            ))}
+            ))} */}
 
             {/* {selectedPosition && (
                 <InfoWindow
@@ -87,7 +87,7 @@ const Map = () => {
 
 const WrappedMap = withScriptjs(withGoogleMap(Map))
 
-export default function MapContainer(){
+const MapContainer = ({query}) => {
     return (
         <div style={{ width: "100vw", height: "100vh" }}>
           <WrappedMap
@@ -95,7 +95,10 @@ export default function MapContainer(){
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
+            query = {query}
           />
         </div>
       );
 }
+
+export default MapContainer;
