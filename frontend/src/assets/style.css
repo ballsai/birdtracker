@@ -38,10 +38,10 @@ body {
 /* Position and sizing of burger button */
 .bm-burger-button {
   position: fixed;
-  width: 36px;
-  height: 30px;
-  left: 36px;
-  top: 36px;
+  width: 30px;
+  height: 24px;
+  left: 15px;
+  top: 15px;
 }
 
 /* Color/shape of burger icon bars */
@@ -82,4 +82,19 @@ body {
   background: rgba(0, 0, 0, 0.3);
 }
 
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
 

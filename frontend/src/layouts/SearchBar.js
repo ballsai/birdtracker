@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import ReactSearchBox from 'react-search-box';
 
 const SearchBar = (props) => {
 
@@ -15,16 +14,14 @@ const SearchBar = (props) => {
       event.preventDefault();
       props.menuStateChange(false);
   }
-
-  const handleReset = (event) =>{
-      props.requestQuery("");
-  }
   
   return(
-        <form onSubmit={handleSubmit}>
-            <input onChange={handleChange} placeholder="ID or name" />
-            <input type="reset" /*defaultValue="Reset"*/ onClick={handleReset}/>  
-        </form>
+        <div className="input-group input-group-sm" onSubmit={handleSubmit}>
+            <input className="form-control" type="search"
+                placeholder="Start to filter... e.g.(ID, name)"
+                onChange={handleChange}
+            />
+        </div>
     );
 }
 

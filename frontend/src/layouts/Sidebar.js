@@ -18,30 +18,30 @@ const Sidebar = ({requestQuery}) =>{
     }, isOpen);
 
     return(  
-        <Menu disableAutoFocus isOpen={isOpen}>
-            <h5>Filter</h5>
+        <Menu width={280} disableAutoFocus isOpen={isOpen}>
+            <h6>FILTER DISPLAY</h6>
             <a className="menu-item">
                 <SearchBar requestQuery={requestQuery} menuStateChange={isMenuOpen}/>
             </a>
-            <h6>Or filter by date</h6>
+            <h6 align="center">OR</h6>
             <a className="menu-item">
                 <DatePicker/>
             </a>
-
+            <p>_______________________________</p>
             <a className="menu-item" href="/">
-                Export 🥰
+                <h6>📄 EXPORT CSV</h6> 
             </a>
 
             <a className="menu-item" href="/burgers">
-                ความเป็นมา
+                <h6>📈 ANALYTICS</h6>
             </a>
 
             <a className="menu-item" href="/pizzas">
-                ติดต่อเรา
+                <h6>😃 ABOUT ME</h6>
             </a>
 
             <a className="menu-item" href="/desserts">
-                สนับสนุน
+                <h6>🤝 SPONSER</h6>
             </a>
         </Menu>
     );
