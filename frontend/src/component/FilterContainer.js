@@ -3,6 +3,7 @@ import {
     Marker, 
     InfoWindow,
     Polyline} from 'react-google-maps';
+import polylineStyles from '../assets/polylineStyles'
 
 const maps_icon = require('../assets/marker_icon.png');
 
@@ -12,7 +13,7 @@ const FilterContainer = (props) =>{
     const [filterPaths, setFilterPaths] = useState([]);
     const [selectedLocation, setSelectedLocation] = useState(null);
 
-    const filterData = () =>{
+    const fetchFilterData = () =>{
         let newList = [];
         if(props.query != ""){
             newList = props.birds.filter(bird => bird.name.includes(props.query));
@@ -21,25 +22,24 @@ const FilterContainer = (props) =>{
             newList = props.birds;
             setFilterBird(props.birds);
         }
-        
         newList.map(bird => {
-            let newLocations = [];
+            let paths = [];
+            let color = polylineStyles[bird.id];
             bird.locations.map(location => {
-                newLocations = [...newLocations, 
+                paths = [...paths, 
                     (({lat, lng})=>({lat, lng}))(location.coordinates)];
             });
-            setFilterPaths(filterPaths=> [...filterPaths, newLocations]);
+            setFilterPaths(filterPaths=> [...filterPaths, {color, paths}]);
         });
     }
 
     useEffect(() => {
 
         setFilterPaths([]); // Initialize again, prevent append from previous list
-        filterData();
-
+        fetchFilterData();
         console.log(filterPaths);
 
-    },[props.birds, props.query]); //Update when birds or query change
+    },[props.birds, props.query]); //Update when birds or query has changed
 
     return(
         <div>
@@ -77,9 +77,9 @@ const FilterContainer = (props) =>{
 
             {filterPaths.map((path, index) => (
                 <Polyline key = {index}
-                    path = {path}
+                    path = {path.paths}
                     options = {{
-                        strokeColor: "#ff2527",
+                        strokeColor: path.color,
                         strokeOpacity: 0.75,
                         strokeWeight: 2
                     }}

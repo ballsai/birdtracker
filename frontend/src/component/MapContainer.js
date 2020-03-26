@@ -7,7 +7,7 @@ import { GoogleMap,
 import mapStyles from '../assets/mapStyles';
 import FilterContainer from './FilterContainer';
 
-const Map = ({query}) => {
+const Map = ({passQuery}) => {
     const [birds, setBirds] = useState([]);
 
     const fetchData = async() =>{
@@ -34,14 +34,14 @@ const Map = ({query}) => {
                                 fullscreenControl: false,
                                 scaleControl: true}}
         >
-            <FilterContainer birds={birds} query={query}/>
+            <FilterContainer birds={birds} query={passQuery}/>
         </GoogleMap>
     );
 }
 
 const WrappedMap = withScriptjs(withGoogleMap(Map))
 
-const MapContainer = ({query}) => {
+const MapContainer = ({passQuery}) => {
     return (
         <div style={{ width: "100vw", height: "100vh" }}>
           <WrappedMap
@@ -49,7 +49,7 @@ const MapContainer = ({query}) => {
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
-            query = {query}
+            passQuery = {passQuery}
           />
         </div>
       );
