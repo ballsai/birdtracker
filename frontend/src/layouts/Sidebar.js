@@ -28,19 +28,23 @@ const Sidebar = ({requestQuery}) =>{
                 <DatePicker/>
             </a>
             <p>_______________________________</p>
-            <a className="menu-item" href="/">
+            <a className="menu-item" href="#">
                 <h6>📄 EXPORT CSV</h6> 
             </a>
 
-            <a className="menu-item" href="/burgers">
+            <a className="menu-item" href="#">
                 <h6>📈 ANALYTICS</h6>
             </a>
 
-            <a className="menu-item" href="/pizzas">
+            <a className="menu-item" href="#">
+                <h6>🐦 ADD BIRD</h6>
+            </a>
+
+            <a className="menu-item" href="#">
                 <h6>😃 ABOUT ME</h6>
             </a>
 
-            <a className="menu-item" href="/desserts">
+            <a className="menu-item" href="#">
                 <h6>🤝 SPONSER</h6>
             </a>
         </Menu>

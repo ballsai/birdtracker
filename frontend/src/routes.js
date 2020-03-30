@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import MapContainer from './component/MapContainer';
+import MapContainer from './components/MapContainer';
 
 const Routes = ({passQuery}) => {
     return(
